@@ -1,6 +1,6 @@
 using System;
 
-namespace NorthWindApp.Models
+namespace NorthWindApp.Models.ViewModels
 {
     public class ErrorViewModel
     {
