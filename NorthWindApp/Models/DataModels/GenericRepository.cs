@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NorthWindApp.Models.DataModels
 {
-    public abstract class GenericRepository<TEntity> : IDisposable, IGenericRepository<TEntity> 
+    public abstract class GenericRepository<TEntity> :IGenericRepository<TEntity> 
         where TEntity : class
     {
         DbContext _context;

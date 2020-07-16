@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NorthWindApp.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace NorthWindApp.Models.DataModels
     {
         private NorthwindContext _context;
 
-        public ProductRepository Products { get; set; }
-        public CategoryRepository Categories { get; set; }
-
+        public IGenericRepository<Product> Products { get; set; }
+        public ICategoryRepository Categories { get; set; }
+       
         public UnitOfWork(NorthwindContext context)
         {
             _context = context;

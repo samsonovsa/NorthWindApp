@@ -26,7 +26,9 @@ namespace NorthWindApp
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<NorthwindContextcs>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped< IUnitOfWork, UnitOfWork >(provider=> 
+                new UnitOfWork(provider.GetService<NorthwindContext>()));
             services.AddControllersWithViews();
         }
 
