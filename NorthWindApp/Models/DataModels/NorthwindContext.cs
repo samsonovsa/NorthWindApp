@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NorthWindApp.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace NorthWindApp.Models.DataModels
 {
-    public class NorthwindContextcs: DbContext
+    public class NorthwindContext: DbContext
     {
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
-        public NorthwindContextcs(DbContextOptions<NorthwindContextcs> options)
+        public NorthwindContext(DbContextOptions<NorthwindContext> options)
             :base(options)
         {
 
