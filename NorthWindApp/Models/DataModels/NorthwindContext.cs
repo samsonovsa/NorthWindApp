@@ -13,6 +13,7 @@ namespace NorthWindApp.Models.DataModels
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
 
         public NorthwindContext(DbContextOptions<NorthwindContext> options)
             :base(options)
@@ -27,7 +28,13 @@ namespace NorthWindApp.Models.DataModels
 
         public void ProductConfigure(EntityTypeBuilder<Product> builder)
         {
+            builder.HasOne<Category>(s => s.Category)
+                .WithMany(g => g.Products)
+                .HasForeignKey(s => s.CategoryId);
 
+            builder.HasOne<Supplier>(s => s.Supplier)
+                .WithMany(g => g.Products)
+                .HasForeignKey(s => s.SupplierId);
         }
 
     }
