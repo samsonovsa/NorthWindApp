@@ -12,12 +12,14 @@ namespace NorthWindApp.Models.DataModels
 
         public IGenericRepository<Product> Products { get; set; }
         public ICategoryRepository Categories { get; set; }
-       
+        public ISupplierRepository Suppliers { get; set; }
+
         public UnitOfWork(NorthwindContext context)
         {
             _context = context;
             Products = new ProductRepository(_context);
             Categories = new CategoryRepository(_context);
+            Suppliers = new SupplierRepository(_context);
         }
 
         public void Save()

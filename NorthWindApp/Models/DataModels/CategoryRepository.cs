@@ -11,6 +11,11 @@ namespace NorthWindApp.Models.DataModels
         public CategoryRepository(NorthwindContext context)
             : base(context) { }
 
+        public IEnumerable<Category> GetCategories()
+        {
+            return Get();
+        }
+
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
             return await Task.Run(()=> Get());

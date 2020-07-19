@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NorthWindApp.Models.DataModels;
@@ -21,21 +23,25 @@ namespace NorthWindApp.Controllers
             _configuration = configuration;
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var products = await Task<IEnumerable<Product>>
-                .Run(() => _unitOfWork.Products
-                    .GetWithInclude(p => p.Category, p => p.Supplier));
+            //var products = await Task<IEnumerable<Product>>
+            //    .Run(() => _unitOfWork.Products
+            //        .GetWithInclude(p => p.Category, p => p.Supplier));
 
-            var productsViewModel = new ProductsViewModel(_configuration);
-            productsViewModel.SetProducts(products);
+            var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration);
+            //productsViewModel.SetProducts(products);
 
-            return View(productsViewModel.Products);
+            return View(productsViewModel);
         }
 
         [HttpGet()]
         public ActionResult Create()
         {
+            var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration);
+            ViewBag.Categories = productsViewModel.Categories;
+            ViewBag.Suppliers = productsViewModel.Suppliers;
+
             return  View();
         }
 
@@ -43,14 +49,20 @@ namespace NorthWindApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Product product)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                    await Task.Run(() => _unitOfWork.Products.Create(product));
 
-                return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await Task.Run(() => _unitOfWork.Products.Create(product));
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
-            catch
+            else
             {
                 return View();
             }
@@ -60,31 +72,76 @@ namespace NorthWindApp.Controllers
         public async Task<ActionResult> Update(int id)
         {
             Product product = await Task.Run(()=> _unitOfWork.Products.FindById(id));
-            return View(product);
+            if (product != null)
+            {
+                var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration);
+                ViewBag.Categories = productsViewModel.Categories;
+                ViewBag.Suppliers = productsViewModel.Suppliers;
+
+                return View(product);
+            }
+            else
+                return View();
+            
         }
 
         [HttpPost()]
         [ValidateAntiForgeryToken]
-        public async Task Update(Product product)
+        public async Task<ActionResult> Update(Product product)
         {
             if (ModelState.IsValid)
-                await Task.Run(() => _unitOfWork.Products.Update(product));
+            {
+                try
+                {
+                    await Task.Run(() => _unitOfWork.Products.Update(product));
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception)
+                {
+
+                    return RedirectToAction(nameof(Error));
+                }
+
+            }
+            else
+            {
+                var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration);
+                ViewBag.Categories = productsViewModel.Categories;
+                ViewBag.Suppliers = productsViewModel.Suppliers;
+
+                return View(product);
+            }
+
         }
 
         [HttpPost()]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(Product product)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
+            Product product = await Task.Run(() => _unitOfWork.Products.FindById(id));
+            if (product != null)
             {
-                await Task.Run(() => _unitOfWork.Products.Remove(product));
+                try
+                {
+                    await Task.Run(() => _unitOfWork.Products.Remove(product));
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return RedirectToAction(nameof(Error));
+                }
             }
-            catch
-            {
-                return View();
-            }
+            else
+                return RedirectToAction(nameof(Error));
+        }
+
+        [AllowAnonymous]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel
+            { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         protected override void Dispose(bool disposing)

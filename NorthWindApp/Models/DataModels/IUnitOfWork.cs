@@ -10,6 +10,7 @@ namespace NorthWindApp.Models.DataModels
     {
         ICategoryRepository Categories { get; set; }
         IGenericRepository<Product> Products { get; set; }
+        ISupplierRepository Suppliers { get; set; }
         void Save();
         void Begin();
         void Commit();

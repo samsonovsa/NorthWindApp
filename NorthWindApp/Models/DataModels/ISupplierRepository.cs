@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NorthWindApp.Models.DataModels
 {
-    public interface ICategoryRepository
+    public interface ISupplierRepository
     {
-        IEnumerable<Category> GetCategories();
-        Task<IEnumerable<Category>> GetCategoriesAsync();
+        IEnumerable<Supplier> GetSuppliers();
+        Task<IEnumerable<Supplier>> GetSuppliersAsync();
     }
 }
