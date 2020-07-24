@@ -1,40 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NorthWindApp.Models.DataModels;
-using NorthWindApp.Models.Entities;
+using NorthWindApp.BLL.Interfaces;
+using NorthWindApp.DTO.Models;
 using NorthWindApp.Models.ViewModels;
 
 namespace NorthWindApp.Controllers
 {
     public class ProductController : Controller
     {
-        IUnitOfWork _unitOfWork;
-        IConfiguration _configuration;
+        IDictionaryService _dictionaryService;
         ILogger _logger;
+        IMapper _mapper;
 
-        public ProductController(IUnitOfWork unitOfWork, IConfiguration configuration, ILogger<ProductController> logger)
+        public ProductController(IDictionaryService dictionaryService, ILogger<ProductController> logger, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _configuration = configuration;
+            _dictionaryService = dictionaryService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public ActionResult Index()
         {
-            //var products = await Task<IEnumerable<Product>>
-            //    .Run(() => _unitOfWork.Products
-            //        .GetWithInclude(p => p.Category, p => p.Supplier));
-
-            var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration, _logger);
-            //productsViewModel.SetProducts(products);
+            var productsViewModel = new ProductsViewModel(_dictionaryService, _logger, _mapper);
 
             return View(productsViewModel);
         }
@@ -42,7 +36,7 @@ namespace NorthWindApp.Controllers
         [HttpGet()]
         public ActionResult Create()
         {
-            var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration, _logger);
+            var productsViewModel = new ProductsViewModel(_dictionaryService, _logger, _mapper);
             ViewBag.Categories = productsViewModel.Categories;
             ViewBag.Suppliers = productsViewModel.Suppliers;
 
@@ -51,14 +45,14 @@ namespace NorthWindApp.Controllers
 
         [HttpPost()]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Product product)
+        public async Task<ActionResult> Create(ProductViewModel productViewModel)
         {
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await Task.Run(() => _unitOfWork.Products.Create(product));
+                    await _dictionaryService.ProductCreateAsync(_mapper.Map<Product>(productViewModel));
                     return RedirectToAction(nameof(Index));
                 }
                 catch
@@ -75,14 +69,14 @@ namespace NorthWindApp.Controllers
         [HttpGet()]
         public async Task<ActionResult> Update(int id)
         {
-            Product product = await Task.Run(()=> _unitOfWork.Products.FindById(id));
+            Product product = await _dictionaryService.ProductFindById(id); 
             if (product != null)
             {
-                var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration, _logger);
+                var productsViewModel = new ProductsViewModel(_dictionaryService, _logger, _mapper);
                 ViewBag.Categories = productsViewModel.Categories;
                 ViewBag.Suppliers = productsViewModel.Suppliers;
 
-                return View(product);
+                return View(_mapper.Map<ProductViewModel>(product));
             }
             else
                 return View();
@@ -91,30 +85,29 @@ namespace NorthWindApp.Controllers
 
         [HttpPost()]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(Product product)
+        public async Task<ActionResult> Update(ProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await Task.Run(() => _unitOfWork.Products.Update(product));
+                    await _dictionaryService.ProductUpdateAsync(_mapper.Map<Product>(productViewModel));
 
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception)
                 {
-
                     return RedirectToAction(nameof(Error));
                 }
 
             }
             else
             {
-                var productsViewModel = new ProductsViewModel(_unitOfWork, _configuration, _logger);
+                var productsViewModel = new ProductsViewModel(_dictionaryService, _logger, _mapper);
                 ViewBag.Categories = productsViewModel.Categories;
                 ViewBag.Suppliers = productsViewModel.Suppliers;
 
-                return View(product);
+                return View(productViewModel);
             }
 
         }
@@ -123,22 +116,16 @@ namespace NorthWindApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id)
         {
-            Product product = await Task.Run(() => _unitOfWork.Products.FindById(id));
-            if (product != null)
+            try
             {
-                try
-                {
-                    await Task.Run(() => _unitOfWork.Products.Remove(product));
-
-                    return RedirectToAction(nameof(Index));
-                }
-                catch
-                {
-                    return RedirectToAction(nameof(Error));
-                }
+                await _dictionaryService.ProductDeleteAsync(id);
+                return RedirectToAction(nameof(Index));
             }
-            else
+            catch
+            {
                 return RedirectToAction(nameof(Error));
+            }
+
         }
 
         [AllowAnonymous]
@@ -154,7 +141,7 @@ namespace NorthWindApp.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            _unitOfWork.Dispose();
+            _dictionaryService.Dispose();
             base.Dispose(disposing);
         }
 

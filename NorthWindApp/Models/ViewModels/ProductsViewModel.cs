@@ -1,34 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using NorthWindApp.Models.DataModels;
-using NorthWindApp.Models.Entities;
-using System;
+using NorthWindApp.BLL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NorthWindApp.Models.ViewModels
 {
     public class ProductsViewModel
     {
-        private int _maxProductCountOnPage;
-        private IUnitOfWork _unitOfWork;
+        IDictionaryService _dictionaryService;
+        private IMapper _mapper;
 
-        public ProductsViewModel(IUnitOfWork unitOfWork,IConfiguration configuration, ILogger logger)
+        public ProductsViewModel(IDictionaryService dictionaryService, ILogger logger, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _dictionaryService = dictionaryService;
+            _mapper = mapper;
 
-            int.TryParse(configuration["MaxProductCountOnPage"],out _maxProductCountOnPage);
-            logger.LogInformation($"Read configuration MaxProductCountOnPage = {_maxProductCountOnPage}");
             SetProducts();
             SetCategories();
             SetSuppliers();
         }
 
-        public int CountProductOnPage => _maxProductCountOnPage;
-
-        public List<Product> Products { get; set; }
+        public List<ProductViewModel> Products { get; set; }
 
         public List<SelectListItem> Suppliers { get; set; }
 
@@ -36,28 +30,23 @@ namespace NorthWindApp.Models.ViewModels
 
         private void SetProducts()
         {
-            var products = _unitOfWork.Products.GetWithInclude(p => p.Category, p => p.Supplier);
-
-            Products = CountProductOnPage > 0 ? 
-                products.Take(CountProductOnPage).ToList()
-                : products.ToList();            
+            Products = _mapper.Map<List<ProductViewModel>>(_dictionaryService.GetProductsAsync().Result);
         }
 
         private void SetCategories()
         {
-            var categories =  _unitOfWork.Categories.GetCategories();
+            var categories = _dictionaryService.GetCategoriesAsync().Result;
             Categories = categories.Select(
                 c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
                 .ToList();
         }
 
-        public void SetSuppliers()
+        private void SetSuppliers()
         {
-            var suppliers = _unitOfWork.Suppliers.GetSuppliers();
+            var suppliers = _dictionaryService.GetSuppliersAsync().Result;
             Suppliers = suppliers.Select(
                 s => new SelectListItem { Value = s.SupplierId.ToString(), Text = s.CompanyName })
                 .ToList();
         }
-
     }
 }

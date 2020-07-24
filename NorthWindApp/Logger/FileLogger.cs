@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 
-
 namespace NorthWindApp.Logger
 {
     public class FileLogger : ILogger
@@ -22,7 +21,6 @@ namespace NorthWindApp.Logger
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            //return logLevel == LogLevel.Trace;
             return true;
         }
 

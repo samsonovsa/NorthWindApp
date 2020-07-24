@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using NorthWindApp.Models.DataModels;
+using NorthWindApp.BLL.Interfaces;
 
 namespace NorthWindApp.Controllers
 {
     public class CategoryController : Controller
     {
-        IUnitOfWork _unitOfWork;
+        IDictionaryService _dictionaryService;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(IDictionaryService dictionaryService)
         {
-            _unitOfWork = unitOfWork;
+            _dictionaryService = dictionaryService;
         }
 
         public async Task<ActionResult> Index()
         {
-            var categories = await _unitOfWork.Categories.GetCategoriesAsync();
+            var categories = await _dictionaryService.GetCategoriesAsync();
             return View(categories);
         }
 
         protected override void Dispose(bool disposing)
         {
-            _unitOfWork.Dispose();
+            _dictionaryService.Dispose();
             base.Dispose(disposing);
         }
     }
