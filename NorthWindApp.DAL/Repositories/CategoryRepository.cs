@@ -20,5 +20,16 @@ namespace NorthWindApp.DAL.Repositories
         {
             return await GetAsync();
         }
+
+        public async Task<byte[]> GetPictureAsync(int id)
+        {
+            var category = await FindByIdAsync(id);
+            return category.Picture;
+        }
+
+        public async Task UpdateCategoryAsync(Category category)
+        {
+            await UpdateAsync(category);
+        }
     }
 }

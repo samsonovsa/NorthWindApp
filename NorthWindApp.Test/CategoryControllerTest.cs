@@ -6,19 +6,32 @@ using System.Collections.Generic;
 using NorthWindApp.DTO.Models;
 using Microsoft.AspNetCore.Mvc;
 using NorthWindApp.Models.ViewModels;
+using AutoMapper;
+using NorthWindApp.Test.Mapping;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace NorthWindApp.Test
 {
     public class CategoryControllerTest
     {
+        private readonly IMapper _mapper;
+
+        public CategoryControllerTest()
+        {
+            _mapper = new MapperConfiguration(cfg =>
+                cfg.AddProfile(new MappingProfile())).CreateMapper();
+        }
+
         [Fact]
-        public void Index_ReturnsAViewResult_WithA()
+        public async Task Index_ReturnsAViewResult_WithAListOfCategeries()
         {
             // Arrange
             var mockDictonaryService = new Mock<IDictionaryService>();
             mockDictonaryService.Setup(service => service.GetCategoriesAsync())
                 .ReturnsAsync(GetCategories());
-            var controller = new CategoryController(mockDictonaryService.Object);
+
+            var controller = new CategoryController(mockDictonaryService.Object, _mapper);
 
             // Act
             var result = await controller.Index();

@@ -19,8 +19,7 @@ namespace NorthWindApp.BLL.Infrastructure
             int counItemOnPage = configuration.GetSection(ProductOptions.Products).Get<ProductOptions>().MaxCountOnPage;
 
             services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IUnitOfWork, UnitOfWork>(provider =>
-              new UnitOfWork(provider.GetService<NorthwindContext>()));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDictionaryService, DictionaryService>(provider =>
                new DictionaryService(provider.GetService<IUnitOfWork>(),
                 provider.GetService<ILogger<DictionaryService>>(),

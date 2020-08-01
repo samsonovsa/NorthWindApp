@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NorthWindApp.DTO.Models.Category>
+﻿@using NorthWindApp.Helpers
+@model IEnumerable<NorthWindApp.Models.ViewModels.CategoryViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,6 +12,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Picture)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -21,6 +25,11 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                <a asp-action="Image" asp-route-id="@item.Id">
+                    @Html.Image(item.Image);
+                </a>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

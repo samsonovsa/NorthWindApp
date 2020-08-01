@@ -69,9 +69,19 @@ namespace NorthWindApp.BLL.Services
             await _unitOfWork.Products.UpdateAsync(product);
         }
 
-        public async Task<Product> ProductFindById(int id)
+        public async Task<Product> ProductFindByIdAsync(int id)
         {
            return await Task.Run(() => _unitOfWork.Products.FindById(id));
+        }
+
+        public async Task<byte[]> CategoryGetPictureAsync(int id)
+        {
+            return await _unitOfWork.Categories.GetPictureAsync(id);
+        }
+
+        public async Task CategoryUpdateAsync(Category category)
+        {
+            await _unitOfWork.Categories.UpdateCategoryAsync(category);
         }
 
         public void Dispose()

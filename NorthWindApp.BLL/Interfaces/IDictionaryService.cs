@@ -15,6 +15,9 @@ namespace NorthWindApp.BLL.Interfaces
         Task ProductCreateAsync(Product product);
         Task ProductDeleteAsync(int id);
         Task ProductUpdateAsync(Product product);
-        Task<Product> ProductFindById(int id);
+        Task<Product> ProductFindByIdAsync(int id);
+
+        Task<byte[]> CategoryGetPictureAsync(int id);
+        Task CategoryUpdateAsync(Category category);
     }
 }

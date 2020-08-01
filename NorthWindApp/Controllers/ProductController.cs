@@ -26,17 +26,19 @@ namespace NorthWindApp.Controllers
             _mapper = mapper;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var productsViewModel = new ProductsViewModel(_dictionaryService, _logger, _mapper);
+            var productsViewModel = await Task.Run(
+                ()=> new ProductsViewModel(_dictionaryService, _logger, _mapper));
 
-            return View(productsViewModel);
+            return  View(productsViewModel);
         }
 
         [HttpGet()]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            var productsViewModel = new ProductsViewModel(_dictionaryService, _logger, _mapper);
+            var productsViewModel = await Task.Run(
+                () => new ProductsViewModel(_dictionaryService, _logger, _mapper));
             ViewBag.Categories = productsViewModel.Categories;
             ViewBag.Suppliers = productsViewModel.Suppliers;
 
@@ -47,20 +49,17 @@ namespace NorthWindApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ProductViewModel productViewModel)
         {
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    await _dictionaryService.ProductCreateAsync(_mapper.Map<Product>(productViewModel));
-                    return RedirectToAction(nameof(Index));
-                }
-                catch
-                {
-                    return View();
-                }
+                return BadRequest(ModelState);
             }
-            else
+
+            try
+            {
+                await _dictionaryService.ProductCreateAsync(_mapper.Map<Product>(productViewModel));
+                return RedirectToAction(nameof(Index));
+            }
+            catch
             {
                 return View();
             }
@@ -69,7 +68,7 @@ namespace NorthWindApp.Controllers
         [HttpGet()]
         public async Task<ActionResult> Update(int id)
         {
-            Product product = await _dictionaryService.ProductFindById(id); 
+            Product product = await _dictionaryService.ProductFindByIdAsync(id); 
             if (product != null)
             {
                 var productsViewModel = new ProductsViewModel(_dictionaryService, _logger, _mapper);
@@ -79,8 +78,7 @@ namespace NorthWindApp.Controllers
                 return View(_mapper.Map<ProductViewModel>(product));
             }
             else
-                return View();
-            
+                return BadRequest($"Error finding product with id = {id} ");
         }
 
         [HttpPost()]

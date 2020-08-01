@@ -3,9 +3,9 @@ using NorthWindApp.DTO.Models;
 
 namespace NorthWindApp.Models.ViewModels.Mapping
 {
-    public class MappingConfig: Profile
+    public class MappingProfile: Profile
     {
-        public MappingConfig()
+        public MappingProfile()
         {
             CreateMap<Category, CategoryViewModel>();
             CreateMap<Supplier, SupplierViewModel>();

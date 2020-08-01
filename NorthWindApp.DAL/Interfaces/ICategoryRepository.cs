@@ -8,5 +8,7 @@ namespace NorthWindApp.DAL.Interfaces
     {
         IEnumerable<Category> GetCategories();
         Task<IEnumerable<Category>> GetCategoriesAsync();
+        Task<byte[]> GetPictureAsync(int id);
+        Task UpdateCategoryAsync(Category category);
     }
 }

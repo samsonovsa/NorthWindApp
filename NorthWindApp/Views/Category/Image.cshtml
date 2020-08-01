@@ -1,0 +1,55 @@
+﻿@model NorthWindApp.Models.ViewModels.CategoryViewModel
+@{
+    ViewData["Title"] = "Edit category image";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container-fluid" id="imgContainer">
+        <div class="row mb-3">
+            <h1>Edit category image</h1>
+        </div>
+        <div class="row mb-3">
+        </div>
+        <div class="row mb-3">
+            @*<form enctype="multipart/form-data" method="post">
+                <dl>
+                    <dt>
+                        <label asp-for="FileUpload.FormFile"></label>
+                    </dt>
+                    <dd>
+                        <input asp-for="FileUpload.FormFile" type="file">
+                        <span asp-validation-for="FileUpload.FormFile"></span>
+                    </dd>
+                </dl>
+                <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" multiple />
+            </form>*@
+
+            <div class="col-md-3 themed-grid-col">
+                <img id="image" src='@Url.Action("GetImage","Category", new {id = Model.Id})' alt="" />
+            </div>
+            <div class="col-md-3 themed-grid-col">
+
+                <form asp-action="UploadImage" asp-controller="Category" method="post" enctype="multipart/form-data">
+                    <input type="file" name="ImageUpload" /><br>
+                    <input name="Id" value="@Model.Id" hidden="hidden" /><br>
+                    <input name="Name" value="@Model.Name" /><br>
+                    <input name="Description" value="@Model.Description" hidden="hidden"/><br>
+                    <input type="submit" value="Загрузить" />
+                </form>
+
+                @*<div>
+                    <input id="uploadFile" type="file" name="elementName" multiple />
+                </div>
+                <div>
+                    <br />
+                </div>
+                <div>
+                    <a asp-action="UploadImage" asp-route-id="@Model.Id">
+                        <button class="btn btn-outline-primary">Upload new image</button>
+                    </a>
+                </div>*@
+
+            </div>
+        </div>
+    </div>
+
