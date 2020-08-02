@@ -54,6 +54,12 @@ namespace NorthWindApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name:"images",
+                    pattern: "images/{id:int}",
+                    new { controller = "Category", action = "GetImage" }
+                    );
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
