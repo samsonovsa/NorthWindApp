@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using NorthWindApp.BLL.ConfigurationOptions;
+using NorthWindApp.BLL.Infrastructure.ConfigurationOptions;
 using NorthWindApp.BLL.Interfaces;
 using NorthWindApp.BLL.Services;
 using NorthWindApp.DAL.EF;
@@ -16,14 +16,15 @@ namespace NorthWindApp.BLL.Infrastructure
         public static IServiceCollection AddBusinessLogicLayer(this IServiceCollection services, IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString("DefaultConnection");
-            int counItemOnPage = configuration.GetSection(ProductOptions.Products).Get<ProductOptions>().MaxCountOnPage;
+
+            services.Configure<ProductOptions>(configuration.GetSection(ProductOptions.Products));
+            services.Configure<CacheOptions>(configuration.GetSection(CacheOptions.CacheImage));
 
             services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IDictionaryService, DictionaryService>(provider =>
-               new DictionaryService(provider.GetService<IUnitOfWork>(),
-                provider.GetService<ILogger<DictionaryService>>(),
-                counItemOnPage));
+            services.AddScoped<IDictionaryService, DictionaryService>();
+            services.AddSingleton<ICacheImageService, CacheImageService>();
+
             return services;
         }
     }

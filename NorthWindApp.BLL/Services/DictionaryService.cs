@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using NorthWindApp.BLL.ConfigurationOptions;
 using NorthWindApp.BLL.Interfaces;
 using NorthWindApp.DAL.Interfaces;
 using NorthWindApp.DTO.Models;
@@ -14,14 +16,16 @@ namespace NorthWindApp.BLL.Services
         IUnitOfWork _unitOfWork;
         int _countItemsOnPage;
         ILogger _logger;
+        ProductOptions _options;
 
-        public DictionaryService(IUnitOfWork unitOfWork, ILogger<DictionaryService> logger, int countItemsOnPage)
+        public DictionaryService(IUnitOfWork unitOfWork, ILogger<DictionaryService> logger, IOptions<ProductOptions> option)
         {
             _unitOfWork = unitOfWork;
-            _countItemsOnPage = countItemsOnPage;
+            _options = option.Value;
+            _countItemsOnPage = _options.MaxCountOnPage;
             _logger = logger ;
 
-            _logger.LogInformation($"Read configuration MaxProductCountOnPage = {countItemsOnPage}");
+            _logger.LogInformation($"Read configuration MaxProductCountOnPage = {_countItemsOnPage}");
         }
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()

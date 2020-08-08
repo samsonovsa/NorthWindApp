@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using NorthWindApp.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NorthWindApp.Models.ViewModels
 {
@@ -29,7 +25,6 @@ namespace NorthWindApp.Models.ViewModels
                 {
                     using (var stream = new MemoryStream(Picture.Skip(garbageBytesInDbImage).ToArray()))
                     {
-                       // Picture = stream.ConvertImage(ImageFormat.Jpeg).ToArray();
                         Picture = stream.ToArray();
                     }
                 }

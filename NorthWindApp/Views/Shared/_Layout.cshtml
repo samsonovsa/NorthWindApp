@@ -9,77 +9,70 @@
 </head>
 <body>
     <header>
-        <!--Navbar-->
-        <nav class="navbar navbar-light light-blue lighten-4">
+        @if (@IsSectionDefined("Headers"))
+        {
+            @RenderSection("Headers", false);
+        }
+        else
+        {
+            <!--Navbar-->
+            <nav class="navbar navbar-light light-blue lighten-4">
 
-            <!-- Navbar brand -->
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Northwind</a>
-
-            <!-- Collapse button -->
-            <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1"
-                    aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="dark-blue-text">
-                    <i class="fas fa-bars fa-1x"></i>
-                </span>
-            </button>
-
-            <!-- Collapsible content -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent1">
-
-                <!-- Links -->
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                </ul>
-                <!-- Links -->
-
-            </div>
-            <!-- Collapsible content -->
-
-        </nav>
-        <!--/.Navbar-->
-        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+                <!-- Navbar brand -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Northwind</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+
+                <!-- Collapse button -->
+                <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1"
+                        aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="dark-blue-text">
+                        <i class="fas fa-bars fa-1x"></i>
+                    </span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <!-- Collapsible content -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+
+                    <!-- Links -->
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
                     </ul>
+                    <!-- Links -->
+
                 </div>
-            </div>
-        </nav>*@
+                <!-- Collapsible content -->
+            </nav>
+        }
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <vc:bread-crumbs />
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - NorthWindApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    @if (@IsSectionDefined("Footers"))
+    {
+        @RenderSection("Footers", false);
+    }
+    else
+    {
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - NorthWindApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    }
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

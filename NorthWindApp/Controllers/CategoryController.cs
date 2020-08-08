@@ -4,7 +4,6 @@ using NorthWindApp.BLL.Interfaces;
 using AutoMapper;
 using NorthWindApp.Models.ViewModels;
 using System.Collections.Generic;
-using System.IO;
 using NorthWindApp.DTO.Models;
 using System.Linq;
 
@@ -13,11 +12,16 @@ namespace NorthWindApp.Controllers
     public class CategoryController : Controller
     {
         IDictionaryService _dictionaryService;
+        ICacheImageService _cacheImage;
         IMapper _mapper;
 
-        public CategoryController(IDictionaryService dictionaryService, IMapper mapper)
+        public CategoryController(
+            IDictionaryService dictionaryService, 
+            ICacheImageService cacheImage, 
+            IMapper mapper)
         {
             _dictionaryService = dictionaryService;
+            _cacheImage = cacheImage;
             _mapper = mapper;
         }
 
@@ -46,12 +50,14 @@ namespace NorthWindApp.Controllers
         public async Task<ActionResult> UploadImage(CategoryViewModel category)
         {
             await _dictionaryService.CategoryUpdateAsync(_mapper.Map<Category>( category));
+            await _cacheImage.ClearAsync();
             return RedirectToAction("Image", new { id = category.Id});
         }
 
         protected override void Dispose(bool disposing)
         {
             _dictionaryService.Dispose();
+            _cacheImage.ClearAsync();
             base.Dispose(disposing);
         }
     }

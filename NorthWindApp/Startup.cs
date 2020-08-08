@@ -8,6 +8,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using NorthWindApp.BLL.Infrastructure;
+using NorthWindApp.Helpers;
+using NorthWindApp.Configuration;
+using NorthWindApp.Filters;
+using NorthWindApp.Middleware;
 
 namespace NorthWindApp
 {
@@ -23,9 +27,16 @@ namespace NorthWindApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<FilterOptions>(Configuration.GetSection(FilterOptions.Filters));
+
             services.AddBusinessLogicLayer(Configuration);
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
+
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(typeof(LoggingActionFilter));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +55,7 @@ namespace NorthWindApp
 
             logger.LogInformation($"Applicaton started {DateTime.Now} in location {Directory.GetCurrentDirectory()}");
 
+            app.EnableRequestBodyBuffering();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -51,14 +63,15 @@ namespace NorthWindApp
 
             app.UseAuthorization();
 
+            app.UseCacheImageMiddleware();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name:"images",
+                    name: "images",
                     pattern: "images/{id:int}",
                     new { controller = "Category", action = "GetImage" }
                     );
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

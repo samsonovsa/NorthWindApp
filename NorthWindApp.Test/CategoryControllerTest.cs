@@ -28,10 +28,11 @@ namespace NorthWindApp.Test
         {
             // Arrange
             var mockDictonaryService = new Mock<IDictionaryService>();
+            var mockCacheService = new Mock<ICacheImageService>();
             mockDictonaryService.Setup(service => service.GetCategoriesAsync())
                 .ReturnsAsync(GetCategories());
 
-            var controller = new CategoryController(mockDictonaryService.Object, _mapper);
+            var controller = new CategoryController(mockDictonaryService.Object, mockCacheService.Object, _mapper);
 
             // Act
             var result = await controller.Index();
