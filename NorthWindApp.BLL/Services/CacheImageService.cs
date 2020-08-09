@@ -87,11 +87,15 @@ namespace NorthWindApp.BLL.Services
             if (oldCache == null)
                 return false;
 
+            var keys = new List<string>();
+
             foreach (var cache in oldCache)
             {
                 var cacheKey = _cache.FirstOrDefault(x => x.Value == cache).Key;
-                await CacheRemove(cacheKey);
+                keys.Add(cacheKey);
             }
+
+            await ClearCacheByKeys(keys);
 
             return true;
         }
@@ -125,10 +129,23 @@ namespace NorthWindApp.BLL.Services
 
         public async Task ClearAsync()
         {
-            foreach (var key in _cache.Keys)
+            await ClearCacheByKeys(_cache.Keys);
+        }
+
+
+        private async Task ClearCacheByKeys(IEnumerable<string> keys)
+        {
+            if (keys.Count() == 0)
+                return;
+
+            var tasks = new List<Task>();
+
+            foreach (var key in keys)
             {
-                await CacheRemove(key);
+                tasks.Add(CacheRemove(key));
             }
+
+            await Task.WhenAll(tasks.ToArray());
         }
     }
 
