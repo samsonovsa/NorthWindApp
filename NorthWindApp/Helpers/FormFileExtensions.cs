@@ -6,7 +6,7 @@ namespace NorthWindApp.Helpers
 {
     public static class FormFileExtensions
     {
-        public static async Task<byte[]> GetBytes(this IFormFile formFile)
+        public static async Task<byte[]> GetBytesAsync(this IFormFile formFile)
         {
             using (var memoryStream = new MemoryStream())
             {

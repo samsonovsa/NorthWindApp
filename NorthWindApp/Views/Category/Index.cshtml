@@ -38,6 +38,10 @@
                     <a asp-action="Image" asp-route-id="@item.Id">
                         @Html.Image(item.Image);
                     </a>
+                    <br />
+                    @Html.NorthwindImageLink(item.Id, "View image")
+                    <br />
+                    <a northwind-id="@item.Id">View image by tag helper</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)

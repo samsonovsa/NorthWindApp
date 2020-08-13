@@ -11,21 +11,9 @@
         <div class="row mb-3">
         </div>
         <div class="row mb-3">
-            @*<form enctype="multipart/form-data" method="post">
-                <dl>
-                    <dt>
-                        <label asp-for="FileUpload.FormFile"></label>
-                    </dt>
-                    <dd>
-                        <input asp-for="FileUpload.FormFile" type="file">
-                        <span asp-validation-for="FileUpload.FormFile"></span>
-                    </dd>
-                </dl>
-                <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" multiple />
-            </form>*@
-
             <div class="col-md-3 themed-grid-col">
-                <img id="image" src='@Url.Action("GetImage","Category", new {id = Model.Id})' alt="" />
+                @*<img id="image" src='@Url.Action("GetImage","Category", new {id = Model.Id})' alt="" />*@
+                @Html.NorthwindImage(Model.Id, Model.Name)
             </div>
             <div class="col-md-3 themed-grid-col">
 
@@ -36,18 +24,6 @@
                     <input name="Description" value="@Model.Description" hidden="hidden"/><br>
                     <input type="submit" value="Загрузить" />
                 </form>
-
-                @*<div>
-                    <input id="uploadFile" type="file" name="elementName" multiple />
-                </div>
-                <div>
-                    <br />
-                </div>
-                <div>
-                    <a asp-action="UploadImage" asp-route-id="@Model.Id">
-                        <button class="btn btn-outline-primary">Upload new image</button>
-                    </a>
-                </div>*@
 
             </div>
         </div>

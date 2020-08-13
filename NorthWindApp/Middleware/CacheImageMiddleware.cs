@@ -19,16 +19,16 @@ namespace NorthWindApp.Middleware
         {
             Stream originalBody = context.Response.Body;
 
-            //context.Request.EnableBuffering();
             if (context.Request.Path.ToString()
                 .ToLower().Contains("image"))
             {
                 var key = context.Request.Path.ToString();
-                var image = await cache.GetImage(key);
+                var image = await cache.GetImageAsync(key);
                 if (image != null)
                 {
                     context.Response.ContentType = "image/png";
                     await context.Response.Body.WriteAsync(image);
+                    return;
                 }
             }
 
@@ -51,7 +51,7 @@ namespace NorthWindApp.Middleware
                             memStream.Position = 0;
                             var responseBody = memStream.GetBuffer();
 
-                            await cache.SetImage(context.Request.Path.ToString(), responseBody);
+                            await cache.SetImageAsync(context.Request.Path.ToString(), responseBody);
                         }
                         catch (System.Exception ex)
                         {
@@ -64,11 +64,6 @@ namespace NorthWindApp.Middleware
             {
                 context.Response.Body = originalBody;
             }
-
-
-            //await _next(context);
-
-
         }
     }
 }

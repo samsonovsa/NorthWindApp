@@ -24,7 +24,7 @@ namespace NorthWindApp.BLL.Services
             Directory.CreateDirectory(_filePath);
         }
 
-        public async Task<byte[]> GetImage(string key)
+        public async Task<byte[]> GetImageAsync(string key)
         {
             var cachedImage = new CachedImage();
             if (_cache.TryGetValue(key, out cachedImage))
@@ -43,7 +43,7 @@ namespace NorthWindApp.BLL.Services
                 return null;
         }
 
-        public async Task SetImage(string key, byte[] image)
+        public async Task SetImageAsync(string key, byte[] image)
         {
             var cachedImage = new CachedImage()
             {
@@ -52,17 +52,17 @@ namespace NorthWindApp.BLL.Services
                 Path = Path.Combine(_filePath, Guid.NewGuid().ToString()+".png")
             };
 
-            await CacheRemove(key);
-            await CacheAdd(key, cachedImage);
+            await CacheRemoveAsync(key);
+            await CacheAddAsync(key, cachedImage);
         }
 
-        private async Task CacheAdd(string key, CachedImage cachedImage)
+        private async Task CacheAddAsync(string key, CachedImage cachedImage)
         {
             if (cachedImage.Image.Length == 0)
                 return;
 
             if (_cache.Keys.Count >= _options.MaxCountCachigImage)
-                if (!(await TryClearCach()))
+                if (!(await TryClearCachAsync()))
                     return;
 
             await Task.Run(() =>
@@ -74,12 +74,12 @@ namespace NorthWindApp.BLL.Services
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    throw new  IOException("Error file writing",ex);
                 }
             });
         }
 
-        private async Task<bool> TryClearCach()
+        private async Task<bool> TryClearCachAsync()
         {
             var oldCache = _cache.Values.Where(
                 x => x.TimeSetCache.AddSeconds(_options.CacheExpirationTimeInSec) > DateTime.Now);
@@ -95,12 +95,12 @@ namespace NorthWindApp.BLL.Services
                 keys.Add(cacheKey);
             }
 
-            await ClearCacheByKeys(keys);
+            await ClearCacheByKeysAsync(keys);
 
             return true;
         }
 
-        private async Task CacheRemove(string key)
+        private async Task CacheRemoveAsync(string key)
         {
             if (_cache.ContainsKey(key))
             {
@@ -121,7 +121,7 @@ namespace NorthWindApp.BLL.Services
                     }
                     catch (Exception ex)
                     {
-                        throw ex;
+                        throw new IOException("Error cache file deleting", ex);
                     }
                 });            
             }
@@ -129,11 +129,11 @@ namespace NorthWindApp.BLL.Services
 
         public async Task ClearAsync()
         {
-            await ClearCacheByKeys(_cache.Keys);
+            await ClearCacheByKeysAsync(_cache.Keys);
         }
 
 
-        private async Task ClearCacheByKeys(IEnumerable<string> keys)
+        private async Task ClearCacheByKeysAsync(IEnumerable<string> keys)
         {
             if (keys.Count() == 0)
                 return;
@@ -142,7 +142,7 @@ namespace NorthWindApp.BLL.Services
 
             foreach (var key in keys)
             {
-                tasks.Add(CacheRemove(key));
+                tasks.Add(CacheRemoveAsync(key));
             }
 
             await Task.WhenAll(tasks.ToArray());
