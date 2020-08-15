@@ -28,7 +28,7 @@ namespace NorthWindApp.Test
         {
             // Arrange
             var mockDictonaryService = new Mock<IDictionaryService>();
-            var mockCacheService = new Mock<ICacheImageService>();
+            var mockCacheService = new Mock<IGenericCacheService<byte[]>>();
             mockDictonaryService.Setup(service => service.GetCategoriesAsync())
                 .ReturnsAsync(GetCategories());
 

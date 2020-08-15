@@ -23,7 +23,7 @@ namespace NorthWindApp.BLL.Infrastructure
             services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDictionaryService, DictionaryService>();
-            services.AddSingleton<ICacheImageService, CacheImageService>();
+            services.AddSingleton<IGenericCacheService<byte[]>, CacheImageService>();
 
             return services;
         }

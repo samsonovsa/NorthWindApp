@@ -12,12 +12,12 @@ namespace NorthWindApp.Controllers
     public class CategoryController : Controller
     {
         IDictionaryService _dictionaryService;
-        ICacheImageService _cacheImage;
+        IGenericCacheService<byte[]> _cacheImage;
         IMapper _mapper;
 
         public CategoryController(
             IDictionaryService dictionaryService, 
-            ICacheImageService cacheImage, 
+            IGenericCacheService<byte[]> cacheImage, 
             IMapper mapper)
         {
             _dictionaryService = dictionaryService;

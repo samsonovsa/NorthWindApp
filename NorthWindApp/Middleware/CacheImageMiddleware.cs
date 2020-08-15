@@ -15,7 +15,7 @@ namespace NorthWindApp.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, ICacheImageService cache)
+        public async Task InvokeAsync(HttpContext context, IGenericCacheService<byte[]> cache)
         {
             Stream originalBody = context.Response.Body;
 
@@ -23,7 +23,7 @@ namespace NorthWindApp.Middleware
                 .ToLower().Contains("image"))
             {
                 var key = context.Request.Path.ToString();
-                var image = await cache.GetImageAsync(key);
+                var image = await cache.GetEntityAsync(key);
                 if (image != null)
                 {
                     context.Response.ContentType = "image/png";
@@ -51,7 +51,7 @@ namespace NorthWindApp.Middleware
                             memStream.Position = 0;
                             var responseBody = memStream.GetBuffer();
 
-                            await cache.SetImageAsync(context.Request.Path.ToString(), responseBody);
+                            await cache.SetEntityAsync(context.Request.Path.ToString(), responseBody);
                         }
                         catch (System.Exception ex)
                         {
