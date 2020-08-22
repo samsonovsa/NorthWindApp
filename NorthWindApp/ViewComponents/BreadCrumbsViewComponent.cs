@@ -31,23 +31,27 @@ namespace NorthWindApp.ViewComponents
                     }
             };
 
-            var paths = path.Split("/");
-            int indexOfPage;
+            var paths = path.Split("/").Where(p=> !string.IsNullOrEmpty(p)).ToList();
 
-            foreach (var item in paths)
-            {
-                if (string.IsNullOrEmpty(item) || int.TryParse(item, out indexOfPage))
-                    continue;
-
+            if(paths.Count>0)
                 breadCrumbs.Add(
                     new BreadCrumbViewModel
                     {
-                        Text = item,
-                        Controller = item,
+                        Text = paths[0],
+                        Controller = paths[0],
                         Action = "Index",
                         Active = true
                     });
-            }
+
+            if (paths.Count > 1)
+                breadCrumbs.Add(
+                new BreadCrumbViewModel
+                {
+                    Text = paths[1],
+                    Controller = paths[0],
+                    Action = paths[1],
+                    Active = false
+                });
 
             breadCrumbs.Last().Active = false;
 

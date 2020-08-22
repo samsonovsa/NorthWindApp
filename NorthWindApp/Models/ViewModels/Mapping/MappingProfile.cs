@@ -8,12 +8,16 @@ namespace NorthWindApp.Models.ViewModels.Mapping
         public MappingProfile()
         {
             CreateMap<Category, CategoryViewModel>();
+            CreateMap<Category, CategoryApiViewModel>();
             CreateMap<Supplier, SupplierViewModel>();
             CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, ProductApiViewModel>();
 
             CreateMap<CategoryViewModel, Category>();
+            CreateMap<CategoryApiViewModel, Category>();
             CreateMap<SupplierViewModel, Supplier>();
             CreateMap<ProductViewModel, Product>();
+            CreateMap<ProductApiViewModel, Product>();
         }
     }
 }

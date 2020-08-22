@@ -12,8 +12,8 @@ namespace NorthWindApp.BLL.Services
 {
     public class GenericCacheService<TEntity> : IGenericCacheService<TEntity>
     {
-        CacheOptions _options;
-        Dictionary<string, CachedEntity<TEntity>> _cache;
+        private readonly CacheOptions _options;
+        private readonly Dictionary<string, CachedEntity<TEntity>> _cache;
         private readonly string _filePath;
 
         public GenericCacheService(IOptions<CacheOptions> options)
@@ -27,21 +27,21 @@ namespace NorthWindApp.BLL.Services
 
         public async Task<TEntity> GetEntityAsync(string key)
         {
-            var cachedImage = new CachedEntity<TEntity>();
-            if (_cache.TryGetValue(key, out cachedImage))
+            var cachedEntity = new CachedEntity<TEntity>();
+            if (_cache.TryGetValue(key, out cachedEntity))
             {
-                if (cachedImage.TimeSetCache.AddSeconds(_options.CacheExpirationTimeInSec) < DateTime.Now)
+                if (cachedEntity.TimeSetCache.AddSeconds(_options.CacheExpirationTimeInSec) < DateTime.Now)
                     return default;
 
-                if (File.Exists(cachedImage.Path))
+                if (File.Exists(cachedEntity.Path))
                 {
                     return await Task.Run(()=>
                     {
-                        File.ReadAllBytes(cachedImage.Path);
+                        File.ReadAllBytes(cachedEntity.Path);
                         BinaryFormatter formatter = new BinaryFormatter();
                         TEntity entity;
 
-                        using (FileStream fs = new FileStream(cachedImage.Path, FileMode.OpenOrCreate))
+                        using (FileStream fs = new FileStream(cachedEntity.Path, FileMode.OpenOrCreate))
                         {
                             entity = (TEntity)formatter.Deserialize(fs);
                         }
@@ -71,18 +71,17 @@ namespace NorthWindApp.BLL.Services
 
         private async Task CacheAddAsync(string key, CachedEntity<TEntity> cachedEntity)
         {
-            if (cachedEntity.Entity == default)
+            if (cachedEntity.Entity == null)
                 return;
 
             if (_cache.Keys.Count >= _options.MaxCountCachigImage)
-                if (!(await TryClearCachAsync()))
+                if (!(await TryClearCacheAsync()))
                     return;
 
             await Task.Run(() =>
             {
                 try
                 {
-                    //  File.WriteAllBytes(cachedEntity.Path, cachedEntity.Entity);
                     BinaryFormatter formatter = new BinaryFormatter();
                     using (FileStream fs = new FileStream(cachedEntity.Path, FileMode.OpenOrCreate))
                     {
@@ -97,12 +96,17 @@ namespace NorthWindApp.BLL.Services
             });
         }
 
-        private async Task<bool> TryClearCachAsync()
+        public async Task ClearAsync()
+        {
+            await ClearCacheByKeysAsync(_cache.Keys);
+        }
+
+        private async Task<bool> TryClearCacheAsync()
         {
             var oldCache = _cache.Values.Where(
                 x => x.TimeSetCache.AddSeconds(_options.CacheExpirationTimeInSec) > DateTime.Now);
 
-            if (oldCache == null)
+            if (!oldCache.Any())
                 return false;
 
             var keys = new List<string>();
@@ -122,17 +126,17 @@ namespace NorthWindApp.BLL.Services
         {
             if (_cache.ContainsKey(key))
             {
-                var cachedImage = new CachedEntity<TEntity>();
+                var cachedEntity = new CachedEntity<TEntity>();
 
                 await Task.Run(() =>
                 {
                     try
                     {
-                        if (_cache.TryGetValue(key, out cachedImage))
+                        if (_cache.TryGetValue(key, out cachedEntity))
                         {
-                            if (File.Exists(cachedImage.Path))
+                            if (File.Exists(cachedEntity.Path))
                             {
-                                File.Delete(cachedImage.Path);
+                                File.Delete(cachedEntity.Path);
                             }
                             _cache.Remove(key);
                         }
@@ -145,15 +149,9 @@ namespace NorthWindApp.BLL.Services
             }
         }
 
-        public async Task ClearAsync()
-        {
-            await ClearCacheByKeysAsync(_cache.Keys);
-        }
-
-
         private async Task ClearCacheByKeysAsync(IEnumerable<string> keys)
         {
-            if (keys.Count() == 0)
+            if (!keys.Any())
                 return;
 
             var tasks = new List<Task>();

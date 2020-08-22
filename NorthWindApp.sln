@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthWindApp.BLL", "NorthWi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthWindApp.DTO", "NorthWindApp.DTO\NorthWindApp.DTO.csproj", "{185C534F-AB15-4D91-9910-A5B509F831DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthWindApp.Test", "NorthWindApp.Test\NorthWindApp.Test.csproj", "{5E19ADC6-151A-4D65-BECC-B93C20B1E5FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthWindApp.Test", "NorthWindApp.Test\NorthWindApp.Test.csproj", "{5E19ADC6-151A-4D65-BECC-B93C20B1E5FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthWindApp.WebApiClient", "NorthWindApp.WebApiClient\NorthWindApp.WebApiClient.csproj", "{5F49A363-99BA-4FC6-A695-7C62C37EDF87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5E19ADC6-151A-4D65-BECC-B93C20B1E5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E19ADC6-151A-4D65-BECC-B93C20B1E5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E19ADC6-151A-4D65-BECC-B93C20B1E5FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F49A363-99BA-4FC6-A695-7C62C37EDF87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F49A363-99BA-4FC6-A695-7C62C37EDF87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F49A363-99BA-4FC6-A695-7C62C37EDF87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F49A363-99BA-4FC6-A695-7C62C37EDF87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
