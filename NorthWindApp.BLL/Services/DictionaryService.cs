@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NorthWindApp.BLL.ConfigurationOptions;
 using NorthWindApp.BLL.Interfaces;
 using NorthWindApp.DAL.Interfaces;
 using NorthWindApp.DTO.Models;
@@ -8,15 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NorthWindApp.BLL.Infrastructure.ConfigurationOptions;
 
 namespace NorthWindApp.BLL.Services
 {
     public class DictionaryService : IDictionaryService
     {
-        IUnitOfWork _unitOfWork;
-        int _countItemsOnPage;
-        ILogger _logger;
-        ProductOptions _options;
+        readonly IUnitOfWork _unitOfWork;
+        readonly int _countItemsOnPage;
+        readonly ILogger _logger;
+        readonly ProductOptions _options;
 
         public DictionaryService(IUnitOfWork unitOfWork, ILogger<DictionaryService> logger, IOptions<ProductOptions> option)
         {

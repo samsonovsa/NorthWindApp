@@ -56,7 +56,7 @@ namespace NorthWindApp.WebApiClient.ConsoleClient
             }
         }
 
-        static void Main(string[] args)
+        static async Task Main()
         {
             client.BaseAddress = new Uri(baseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
@@ -65,18 +65,11 @@ namespace NorthWindApp.WebApiClient.ConsoleClient
 
             try
             {
-                Task.Run(async () =>
-                {
-                    var categories = await GetCategoriesAsync();
-                    ShowCategories(categories);
-                }
-                ).Wait();
+                var categories = await GetCategoriesAsync();
+                ShowCategories(categories);
 
-                Task.Run(async () =>
-                {
-                    var products = await GetProductsAsync();
-                    ShowProducts(products);
-                });
+                var products = await GetProductsAsync();
+                ShowProducts(products);
             }
             catch (Exception e)
             {

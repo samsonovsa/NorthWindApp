@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>NorthWind</title>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Categories:</h2>
+        <table id="categories" class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <br />
+    <div class="container">
+        <h2>Products:</h2>
+        <table id="products" class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Unit Price</th>
+                <th>Quantity Per Unit</th>
+                <th>Units In Stock</th>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h2>Search by Id</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();" />
+        <p id="product"></p>
+    </div>
+
+    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/dictionaries.js"></script>
+</body>
+</html>

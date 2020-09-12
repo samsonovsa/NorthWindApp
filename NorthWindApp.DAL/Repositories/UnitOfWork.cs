@@ -7,7 +7,7 @@ namespace NorthWindApp.DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private NorthwindContext _context;
+        private readonly NorthwindContext _context;
 
         public IGenericRepository<Product> Products { get; set; }
         public ICategoryRepository Categories { get; set; }

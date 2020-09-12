@@ -11,9 +11,9 @@ namespace NorthWindApp.Controllers
 {
     public class CategoryController : Controller
     {
-        IDictionaryService _dictionaryService;
-        IGenericCacheService<byte[]> _cacheImage;
-        IMapper _mapper;
+        readonly IDictionaryService _dictionaryService;
+        readonly IGenericCacheService<byte[]> _cacheImage;
+        readonly IMapper _mapper;
 
         public CategoryController(
             IDictionaryService dictionaryService, 

@@ -41,7 +41,7 @@ namespace NorthWindApp.Models.ViewModels
             {
                 if (value != null)
                 {
-                    byte[] imageData = null;
+                    byte[] imageData;
                     List<byte> garbage = Enumerable.Repeat((byte)0x20, garbageBytesInDbImage).ToList();
                     using (var binaryReader = new BinaryReader(value.OpenReadStream()))
                     {

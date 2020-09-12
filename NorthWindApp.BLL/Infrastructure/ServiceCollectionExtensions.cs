@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NorthWindApp.BLL.ConfigurationOptions;
 using NorthWindApp.BLL.Infrastructure.ConfigurationOptions;
 using NorthWindApp.BLL.Interfaces;
 using NorthWindApp.BLL.Services;
@@ -21,9 +21,14 @@ namespace NorthWindApp.BLL.Infrastructure
             services.Configure<CacheOptions>(configuration.GetSection(CacheOptions.CacheImage));
 
             services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connectionString));
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<NorthwindContext>()
+                .AddDefaultTokenProviders();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDictionaryService, DictionaryService>();
             services.AddSingleton<IGenericCacheService<byte[]>, CacheImageService>();
+            services.AddSingleton<IEmailService, EmailService>();
 
             return services;
         }

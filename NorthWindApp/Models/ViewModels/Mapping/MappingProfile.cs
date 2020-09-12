@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NorthWindApp.DTO.Models;
+using NorthWindApp.Models.Api;
 
 namespace NorthWindApp.Models.ViewModels.Mapping
 {
@@ -8,16 +9,16 @@ namespace NorthWindApp.Models.ViewModels.Mapping
         public MappingProfile()
         {
             CreateMap<Category, CategoryViewModel>();
-            CreateMap<Category, CategoryApiViewModel>();
+            CreateMap<Category, CategoryApi>();
             CreateMap<Supplier, SupplierViewModel>();
             CreateMap<Product, ProductViewModel>();
-            CreateMap<Product, ProductApiViewModel>();
+            CreateMap<Product, ProductApi>();
 
             CreateMap<CategoryViewModel, Category>();
-            CreateMap<CategoryApiViewModel, Category>();
+            CreateMap<CategoryApi, Category>();
             CreateMap<SupplierViewModel, Supplier>();
             CreateMap<ProductViewModel, Product>();
-            CreateMap<ProductApiViewModel, Product>();
+            CreateMap<ProductApi, Product>();
         }
     }
 }

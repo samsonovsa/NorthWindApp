@@ -96,7 +96,6 @@ namespace NorthWindApp.Controllers
                 {
                     return RedirectToAction(nameof(Error));
                 }
-
             }
             else
             {
@@ -106,7 +105,6 @@ namespace NorthWindApp.Controllers
 
                 return View(productViewModel);
             }
-
         }
 
         [HttpPost()]
@@ -122,7 +120,6 @@ namespace NorthWindApp.Controllers
             {
                 return RedirectToAction(nameof(Error));
             }
-
         }
 
         [AllowAnonymous]
@@ -133,7 +130,7 @@ namespace NorthWindApp.Controllers
                 _logger.LogError(error.Message);
 
             return View(new ErrorViewModel
-            { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            { RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier });
         }
 
         protected override void Dispose(bool disposing)
@@ -141,6 +138,5 @@ namespace NorthWindApp.Controllers
             _dictionaryService.Dispose();
             base.Dispose(disposing);
         }
-
     }
 }

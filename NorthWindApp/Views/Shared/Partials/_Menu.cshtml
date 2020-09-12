@@ -5,7 +5,7 @@
             <img class="img-circle w-25" src="~/img/menu2.jpg" alt="NorthWind">
         </a>*@
     <a class="navbar-brand" href="#">NorthWind</a>
-
+    <partial name="Partials/_LoginPartial" />
     <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -13,9 +13,11 @@
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarNav">
-
         <!-- Links -->
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
             <li class="nav-item active">
                 <a class="nav-link text-light" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
             </li>
@@ -23,7 +25,7 @@
                 <a class="nav-link text-light" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="nav-link text-light" href="/dictionaries.html">Test Web API</a>
             </li>
         </ul>
         <!-- Links -->

@@ -1,5 +1,5 @@
 ﻿
-namespace NorthWindApp.BLL.ConfigurationOptions
+namespace NorthWindApp.BLL.Infrastructure.ConfigurationOptions
 {
     public class ProductOptions
     {

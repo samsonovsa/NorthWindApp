@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NorthWindApp.Controllers
@@ -14,13 +15,13 @@ namespace NorthWindApp.Controllers
         // GET: Supplier/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            throw new NotImplementedException();
         }
 
         // GET: Supplier/Create
         public ActionResult Create()
         {
-            return View();
+            throw new NotImplementedException();
         }
 
         // POST: Supplier/Create
@@ -36,14 +37,14 @@ namespace NorthWindApp.Controllers
             }
             catch
             {
-                return View();
+                throw new NotImplementedException();
             }
         }
 
         // GET: Supplier/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            throw new NotImplementedException();
         }
 
         // POST: Supplier/Edit/5
@@ -59,14 +60,14 @@ namespace NorthWindApp.Controllers
             }
             catch
             {
-                return View();
+                throw new NotImplementedException();
             }
         }
 
         // GET: Supplier/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            throw new NotImplementedException();
         }
 
         // POST: Supplier/Delete/5
@@ -82,7 +83,7 @@ namespace NorthWindApp.Controllers
             }
             catch
             {
-                return View();
+                throw new NotImplementedException();
             }
         }
     }

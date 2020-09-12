@@ -9,8 +9,8 @@ namespace NorthWindApp.Models.ViewModels
 {
     public class ProductsViewModel
     {
-        IDictionaryService _dictionaryService;
-        private IMapper _mapper;
+        readonly IDictionaryService _dictionaryService;
+        private readonly IMapper _mapper;
 
         public ProductsViewModel(IDictionaryService dictionaryService, ILogger logger, IMapper mapper)
         {

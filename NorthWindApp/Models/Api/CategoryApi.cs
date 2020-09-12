@@ -1,7 +1,7 @@
 ﻿
-namespace NorthWindApp.Models.ViewModels
+namespace NorthWindApp.Models.Api
 {
-    public class CategoryApiViewModel
+    public class CategoryApi: Resource
     {
         public int Id { get; set; }
 

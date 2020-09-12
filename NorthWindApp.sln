@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthWindApp.DTO", "NorthWi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthWindApp.Test", "NorthWindApp.Test\NorthWindApp.Test.csproj", "{5E19ADC6-151A-4D65-BECC-B93C20B1E5FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthWindApp.WebApiClient", "NorthWindApp.WebApiClient\NorthWindApp.WebApiClient.csproj", "{5F49A363-99BA-4FC6-A695-7C62C37EDF87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthWindApp.WebApiClient", "NorthWindApp.WebApiClient\NorthWindApp.WebApiClient.csproj", "{5F49A363-99BA-4FC6-A695-7C62C37EDF87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthWindApp.WebApiTest", "NorthWindApp.WebApiTest\NorthWindApp.WebApiTest.csproj", "{1E068F43-8CF0-4AA8-9B9D-74DC779798F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{5F49A363-99BA-4FC6-A695-7C62C37EDF87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F49A363-99BA-4FC6-A695-7C62C37EDF87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F49A363-99BA-4FC6-A695-7C62C37EDF87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E068F43-8CF0-4AA8-9B9D-74DC779798F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E068F43-8CF0-4AA8-9B9D-74DC779798F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E068F43-8CF0-4AA8-9B9D-74DC779798F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E068F43-8CF0-4AA8-9B9D-74DC779798F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

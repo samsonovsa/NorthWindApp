@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NorthWindApp.DTO.Models;
 
 namespace NorthWindApp.DAL.EF
 {
-    public class NorthwindContext: DbContext
+    public class NorthwindContext: IdentityDbContext
     {
 
         public DbSet<Product> Products { get; set; }
@@ -19,6 +20,7 @@ namespace NorthWindApp.DAL.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Product>(ProductConfigure);
         }
 

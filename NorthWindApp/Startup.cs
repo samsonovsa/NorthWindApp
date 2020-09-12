@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using NorthWindApp.BLL.Infrastructure;
 using NorthWindApp.Helpers;
 using NorthWindApp.Configuration;
@@ -32,11 +34,16 @@ namespace NorthWindApp
             services.AddBusinessLogicLayer(Configuration);
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
+            services.AddSwaggerDocument();
 
-            services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add(typeof(LoggingActionFilter));
-            });
+            services.AddControllersWithViews(options => { options.Filters.Add(typeof(LoggingActionFilter)); });
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            //        .RequireAuthenticatedUser()
+            //        .Build();
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,12 +65,14 @@ namespace NorthWindApp
             app.EnableRequestBodyBuffering();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseCors(builder => builder.AllowAnyOrigin());
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseCacheImageMiddleware();
 

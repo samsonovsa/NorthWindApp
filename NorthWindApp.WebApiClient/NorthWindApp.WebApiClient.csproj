@@ -6,6 +6,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="HtmlClient\lib\jquery.js" />
+    <None Remove="HtmlClient\lib\jquery.min.js" />
+    <None Remove="HtmlClient\lib\jquery.min.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="HtmlClient\lib\jquery.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="HtmlClient\lib\jquery.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="HtmlClient\lib\jquery.min.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
   </ItemGroup>
 

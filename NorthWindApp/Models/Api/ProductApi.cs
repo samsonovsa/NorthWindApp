@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NorthWindApp.Models.ViewModels
+namespace NorthWindApp.Models.Api
 {
-    public class ProductApiViewModel
+    public class ProductApi: Resource
     {
         public int Id { get; set; }
 
