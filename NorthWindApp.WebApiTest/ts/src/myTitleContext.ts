@@ -28,7 +28,7 @@ export class MyTitleContext extends msRest.ServiceClient {
 
     super(undefined, options);
 
-    this.baseUri = options.baseUri || this.baseUri || "https://localhost:44384";
+      this.baseUri = options.baseUri || this.baseUri || "https://localhost:44321";
     this.requestContentType = "application/json; charset=utf-8";
   }
 }

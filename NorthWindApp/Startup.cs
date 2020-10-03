@@ -7,13 +7,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using NorthWindApp.BLL.Infrastructure;
 using NorthWindApp.Helpers;
 using NorthWindApp.Configuration;
 using NorthWindApp.Filters;
 using NorthWindApp.Middleware;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace NorthWindApp
 {
@@ -33,17 +35,28 @@ namespace NorthWindApp
 
             services.AddBusinessLogicLayer(Configuration);
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllersWithViews();
             services.AddSwaggerDocument();
 
-            services.AddControllersWithViews(options => { options.Filters.Add(typeof(LoggingActionFilter)); });
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
+            });
 
-            //services.AddAuthorization(options =>
-            //{
-            //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .Build();
-            //});
+            //services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
+            // services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
+            services.AddAuthentication()
+                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+
+            services.AddControllersWithViews(
+                options => { options.Filters.Add(typeof(LoggingActionFilter)); }
+            )
+                .AddRazorRuntimeCompilation();
+
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,9 +75,15 @@ namespace NorthWindApp
 
             logger.LogInformation($"Applicaton started {DateTime.Now} in location {Directory.GetCurrentDirectory()}");
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.EnableRequestBodyBuffering();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseRouting();
             app.UseCors(builder => builder.AllowAnyOrigin());
 
@@ -78,6 +97,7 @@ namespace NorthWindApp
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "images",
                     pattern: "images/{id:int}",

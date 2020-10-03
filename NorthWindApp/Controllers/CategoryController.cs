@@ -6,9 +6,11 @@ using NorthWindApp.Models.ViewModels;
 using System.Collections.Generic;
 using NorthWindApp.DTO.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NorthWindApp.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         readonly IDictionaryService _dictionaryService;

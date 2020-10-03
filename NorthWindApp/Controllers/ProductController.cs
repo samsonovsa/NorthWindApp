@@ -12,6 +12,7 @@ using NorthWindApp.Models.ViewModels;
 
 namespace NorthWindApp.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         IDictionaryService _dictionaryService;

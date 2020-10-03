@@ -21,9 +21,14 @@ namespace NorthWindApp.BLL.Infrastructure
             services.Configure<CacheOptions>(configuration.GetSection(CacheOptions.CacheImage));
 
             services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connectionString));
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+
+            services.AddDefaultIdentity<IdentityUser>(options => 
+                    options.SignIn.RequireConfirmedAccount = false
+                )
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<NorthwindContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDictionaryService, DictionaryService>();

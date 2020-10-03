@@ -1,6 +1,6 @@
 ﻿"use strict";
-const  productUri = 'https://localhost:44384/api/product';
-const categoryUri = 'https://localhost:44384/api/category';
+const productUri = 'https://localhost:44321/api/product';
+const categoryUri = 'https://localhost:44321/api/category';
 
 $(document).ready(function () {
     // Send an AJAX request

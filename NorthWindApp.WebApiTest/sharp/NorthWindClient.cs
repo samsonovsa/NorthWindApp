@@ -136,7 +136,7 @@ namespace NorthWind
         {
             CategoryApi = new CategoryApi(this);
             ProductApi = new ProductApiOperations(this);
-            BaseUri = new System.Uri("https://localhost:44384");
+            BaseUri = new System.Uri("https://localhost:44321");
             SerializationSettings = new JsonSerializerSettings
             {
                 Formatting = Newtonsoft.Json.Formatting.Indented,

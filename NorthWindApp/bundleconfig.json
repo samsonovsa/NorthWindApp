@@ -1,0 +1,21 @@
+[
+  {
+    "outputFileName": "wwwroot/css/northwind.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css",
+      "wwwroot/css/custom.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/northwind.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js",
+      "wwwroot/js/dictionaries.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]
